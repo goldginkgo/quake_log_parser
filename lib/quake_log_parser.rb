@@ -18,7 +18,8 @@ class QuakeLogParser
         if game_start?(line)
           current_game_lines = []
         elsif game_over?(line)
-          @games << Game.new(current_game_lines)
+          game_name = "game_#{@games.length + 1}"
+          @games << Game.new(current_game_lines, game_name)
         else
           current_game_lines << line
         end
