@@ -22,12 +22,11 @@ class QuakeLogParser
           killer, killed, kill_reason = get_kill_info_from_kill_event(line)
           @current_game.deal_with_kill_event(killer, killed, kill_reason)
         elsif game_over?(line)
-          @games << @current_game
+          @games << @current_game if @current_game && !@games.include?(@current_game)
         else
           next
         end
       end
     end
   end
-
 end

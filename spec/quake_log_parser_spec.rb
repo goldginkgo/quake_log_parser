@@ -6,7 +6,7 @@ describe QuakeLogParser do
     it "should return the correct number of games" do
       parser = QuakeLogParser.new
       parser.parse_log_file
-      expect(parser.games.length).to eq(41)
+      expect(parser.games.length).to eq(21)
     end
   end
 end
