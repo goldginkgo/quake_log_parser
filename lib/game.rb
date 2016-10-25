@@ -35,7 +35,7 @@ class Game
 
   def output_game_hash
     kills_info = {}
-    @players.each { |name, player| kills_info[name] = player.no_suicide_death_times }
+    @players.each { |name, player| kills_info[name] = player.kill_times }
     { @game_name => { total_kills: @total_kills,
                       players: player_names,
                       kills: kills_info}
