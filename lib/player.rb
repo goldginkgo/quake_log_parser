@@ -20,4 +20,7 @@ class Player
     @suicide_times += 1
   end
 
+  def get_score
+    @kill_times - @no_suicide_death_times - @suicide_times
+  end
 end

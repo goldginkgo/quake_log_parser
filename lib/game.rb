@@ -35,10 +35,17 @@ class Game
 
   def output_game_hash
     kills_info = {}
+    score_info = {}
+    @players.each do |name, player|
+      kills_info[name] = player.kill_times
+      score_info[name] = player.get_score
+    end
+
     @players.each { |name, player| kills_info[name] = player.kill_times }
     { @game_name => { total_kills: @total_kills,
                       players: player_names,
-                      kills: kills_info}
+                      kills: kills_info,
+                      scores: score_info}
     }
   end
 
