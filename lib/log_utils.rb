@@ -1,5 +1,7 @@
 module LogUtils
   LOG_FILE_NAME = "games.log"
+  INIT_GAME_REGREX = /InitGame/
+  END_GAME_REGREX = /-----/
 
   def get_log_file_path
     File.expand_path("../../quake_logs/#{LOG_FILE_NAME}", __FILE__)
@@ -19,5 +21,15 @@ module LogUtils
     raise ex
   ensure
     file.close if file
+  end
+
+  def game_start?(line)
+    return true if line =~ INIT_GAME_REGREX
+    return false
+  end
+
+  def game_over?(line)
+    return true if line =~ END_GAME_REGREX
+    return false
   end
 end
