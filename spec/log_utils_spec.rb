@@ -37,4 +37,38 @@ describe LogUtils do
       expect(extended_class.game_over?(line)).to be false
     end
   end
+
+  describe "#kill_event?" do
+    it "should be true if the line is an killing event" do
+      line = "21:42 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT"
+      expect(extended_class.kill_event?(line)).to be true
+
+      line = "2:22 Kill: 3 2 10: Isgalamido killed Dono da Bola by MOD_RAILGUN"
+      expect(extended_class.kill_event?(line)).to be true
+    end
+
+    it "should be false if the line is not an killing event" do
+      line = "15:00 Exit: Timelimit hit."
+      expect(extended_class.kill_event?(line)).to be false
+
+      line = "21:42 Kill: 1022 2 22: "
+      expect(extended_class.kill_event?(line)).to be false
+    end
+  end
+
+  describe "#get_kill_info_from_kill_event" do
+    it "should parse the kill event successfully" do
+      line = "21:42 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT"
+      killer, killed, kill_reason = extended_class.get_kill_info_from_kill_event(line)
+      expect(killer).to eq("<world>")
+      expect(killed).to eq("Isgalamido")
+      expect(kill_reason).to eq("MOD_TRIGGER_HURT")
+
+      line = "2:22 Kill: 3 2 10: Isgalamido killed Dono da Bola by MOD_RAILGUN"
+      killer, killed, kill_reason = extended_class.get_kill_info_from_kill_event(line)
+      expect(killer).to eq("Isgalamido")
+      expect(killed).to eq("Dono da Bola")
+      expect(kill_reason).to eq("MOD_RAILGUN")
+    end
+  end
 end
