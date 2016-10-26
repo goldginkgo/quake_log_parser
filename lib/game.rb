@@ -4,14 +4,13 @@ require_relative 'kill'
 require_relative 'player'
 
 class Game
-  attr_reader :game_name, :players, :total_kills, :kills
+  attr_reader :game_name, :players, :kills
 
   def initialize(game_name)
     @game_name = game_name
     @kills = []
     # {:player_name => Player.new}
     @players = {}
-    @total_kills = 0
   end
 
   def deal_with_kill_event(killer, killed, kill_reason)
@@ -19,12 +18,15 @@ class Game
     @players[killed] ||= Player.new(killed)
 
     @kills << Kill.new(@players[killer], @players[killed], kill_reason)
-    @total_kills += 1
     @players[killer].kill(@players[killed])
   end
 
   def player_names
     @players.keys - ["<world>"]
+  end
+
+  def total_kills
+    @kills.length
   end
 
   def output_game_hash
@@ -36,7 +38,7 @@ class Game
       score_info[name] = player.get_score
     end
 
-    { @game_name => { total_kills: @total_kills,
+    { @game_name => { total_kills: total_kills,
                       players: player_names,
                       kills: kills_info,
                       scores: score_info}
