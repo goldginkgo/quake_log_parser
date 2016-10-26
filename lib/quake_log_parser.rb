@@ -33,4 +33,8 @@ class QuakeLogParser
   def display_game_information
     @games.each {|game| puts game}
   end
+
+  def display_aggregation_kill_reasons
+    @games.each {|game| puts game.display_aggregation_kill_reasons}
+  end
 end

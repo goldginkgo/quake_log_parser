@@ -54,6 +54,10 @@ class Game
     JSON.pretty_generate(output_game_hash)
   end
 
+  def display_aggregation_kill_reasons
+    JSON.pretty_generate(generate_aggregation_kill_reasons_hash)
+  end
+
   def generate_aggregation_kill_reasons_hash
     kill_reasons = {}
     @kills.each do |kill|
