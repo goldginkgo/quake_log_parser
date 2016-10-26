@@ -12,9 +12,13 @@ class Game
     @players = []
   end
 
+  def add_player(player_name)
+    get_player_by_name(player_name) || create_new_player(player_name)
+  end
+
   def deal_with_kill_event(killer, killed, kill_reason)
-    killer_player = get_player_by_name(killer) || create_new_player(killer)
-    killed_player = get_player_by_name(killed) || create_new_player(killed)
+    killer_player = add_player(killer)
+    killed_player = add_player(killed)
 
     killer_player.kill(killed_player)
 
@@ -44,17 +48,14 @@ class Game
   end
 
   def output_game_hash
-    kills_info = {}
     score_info = {}
     real_players.each do |player|
-      kills_info[player.name] = player.kill_times
       score_info[player.name] = player.get_score
     end
 
     { @game_name => { total_kills: total_kills,
                       players: player_names,
-                      kills: kills_info,
-                      scores: score_info}
+                      kills: score_info}
     }
   end
 

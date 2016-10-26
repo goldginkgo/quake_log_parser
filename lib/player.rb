@@ -9,7 +9,7 @@ class Player
   end
 
   def kill(player)
-    if ["<world>", player.name].include?(@name)
+    if self == player || @name == "<world>"
       player.suicide_times += 1
     else
       @kill_times += 1
@@ -18,6 +18,10 @@ class Player
   end
 
   def get_score
-    @kill_times - @no_suicide_death_times - @suicide_times
+    @kill_times - @suicide_times
+  end
+
+  def ==(player)
+    player.name == @name
   end
 end

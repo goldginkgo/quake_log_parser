@@ -30,7 +30,7 @@ describe Player do
     end
 
     it "should get correct score when player has kill events" do
-      expect(player4.get_score).to eq(2)
+      expect(player4.get_score).to eq(4)
     end
   end
 end

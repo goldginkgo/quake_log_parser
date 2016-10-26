@@ -44,28 +44,25 @@ describe Game do
 
   describe "#output_game_hash" do
     it "output the game information successfully" do
-      expect_output_info = {"game_1"=>{:total_kills=>0, :players=>[], :kills=>{}, :scores=>{}}}
+      expect_output_info = {"game_1"=>{:total_kills=>0, :players=>[], :kills=>{}}}
       expect(game.output_game_hash).to eq(expect_output_info)
       # add a no suicide kill event
       game.deal_with_kill_event('test1', 'test2', 'MOD_RAILGUN')
       expect_output_info = {"game_1" => {:total_kills => 1,
                                          :players => ["test1", "test2"],
-                                         :kills => {"test1" => 1, "test2" => 0},
-                                         :scores => {"test1" => 1, "test2" => -1}}}
+                                         :kills => {"test1" => 1, "test2" => 0}}}
       expect(game.output_game_hash).to eq(expect_output_info)
       # add a kill by <world> event
       game.deal_with_kill_event('<world>', 'test1', 'MOD_TRIGGER_HURT')
       expect_output_info = {"game_1" => {:total_kills => 2,
                                          :players => ["test1", "test2"],
-                                         :kills => {"test1" => 1, "test2" => 0},
-                                         :scores => {"test1" => 0, "test2" => -1}}}
+                                         :kills => {"test1" => 0, "test2" => 0}}}
       expect(game.output_game_hash).to eq(expect_output_info)
       # add a kill by self event
       game.deal_with_kill_event('<world>', 'test2', 'MOD_TRIGGER_HURT')
       expect_output_info = {"game_1" => {:total_kills => 3,
                                          :players => ["test1", "test2"],
-                                         :kills => {"test1" => 1, "test2" => 0},
-                                         :scores => {"test1" => 0, "test2" => -2}}}
+                                         :kills => {"test1" => 0, "test2" => -1}}}
       expect(game.output_game_hash).to eq(expect_output_info)
     end
   end
