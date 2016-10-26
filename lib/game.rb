@@ -22,18 +22,21 @@ class Game
   end
 
   def player_names
-    @players.keys - ["<world>"]
+    real_players.keys
   end
 
   def total_kills
     @kills.length
   end
 
+  def real_players
+    @players.select {|key, _| key != '<world>'}
+  end
+
   def output_game_hash
     kills_info = {}
     score_info = {}
-    @players.each do |name, player|
-      next if name == "<world>"
+    real_players.each do |name, player|
       kills_info[name] = player.kill_times
       score_info[name] = player.get_score
     end
