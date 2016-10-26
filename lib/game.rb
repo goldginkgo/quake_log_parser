@@ -9,20 +9,20 @@ class Game
   def initialize(game_name)
     @game_name = game_name
     @kills = []
-    # {:player_name => Player.new}
-    @players = {}
+    @players = []
   end
 
   def deal_with_kill_event(killer, killed, kill_reason)
-    @players[killer] ||= Player.new(killer)
-    @players[killed] ||= Player.new(killed)
+    killer_player = get_player_by_name(killer) || create_new_player(killer)
+    killed_player = get_player_by_name(killed) || create_new_player(killed)
 
-    @kills << Kill.new(@players[killer], @players[killed], kill_reason)
-    @players[killer].kill(@players[killed])
+    killer_player.kill(killed_player)
+
+    @kills << Kill.new(killer_player, killed_player, kill_reason)
   end
 
   def player_names
-    real_players.keys
+    real_players.map(&:name)
   end
 
   def total_kills
@@ -30,15 +30,25 @@ class Game
   end
 
   def real_players
-    @players.select {|key, _| key != '<world>'}
+    @players.select {|player| player.name != '<world>'}
+  end
+
+  def get_player_by_name(name)
+    @players.detect { |player| player.name == name }
+  end
+
+  def create_new_player(name)
+    player = Player.new(name)
+    @players << player
+    player
   end
 
   def output_game_hash
     kills_info = {}
     score_info = {}
-    real_players.each do |name, player|
-      kills_info[name] = player.kill_times
-      score_info[name] = player.get_score
+    real_players.each do |player|
+      kills_info[player.name] = player.kill_times
+      score_info[player.name] = player.get_score
     end
 
     { @game_name => { total_kills: total_kills,
