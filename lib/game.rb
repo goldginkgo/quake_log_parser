@@ -4,7 +4,7 @@ require_relative 'kill'
 require_relative 'player'
 
 class Game
-  attr_reader :game_name, :players, :total_kills
+  attr_reader :game_name, :players, :total_kills, :kills
 
   def initialize(game_name)
     @game_name = game_name
@@ -15,6 +15,7 @@ class Game
   end
 
   def deal_with_kill_event(killer, killed, kill_reason)
+    @kills << Kill.new(killer, killed, kill_reason)
     @total_kills += 1
 
     @players[killer] ||= Player.new(killer) unless killer == "<world>"
@@ -51,5 +52,14 @@ class Game
 
   def to_s
     JSON.pretty_generate(output_game_hash)
+  end
+
+  def generate_aggregation_kill_reasons_hash
+    kill_reasons = {}
+    @kills.each do |kill|
+      kill_reasons[kill.kill_reason] ||= 0
+      kill_reasons[kill.kill_reason] += 1
+    end
+    { @game_name => { kills_by_means: kill_reasons}}
   end
 end
