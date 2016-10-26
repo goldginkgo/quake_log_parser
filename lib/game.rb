@@ -15,34 +15,27 @@ class Game
   end
 
   def deal_with_kill_event(killer, killed, kill_reason)
-    @kills << Kill.new(killer, killed, kill_reason)
-    @total_kills += 1
-
-    @players[killer] ||= Player.new(killer) unless killer == "<world>"
+    @players[killer] ||= Player.new(killer)
     @players[killed] ||= Player.new(killed)
 
-    if killer == "<world>" || killer == killed
-      @players[killed].commit_a_suicide
-    else
-      @players[killer].kill_other_player
-      @players[killed].killed_by_other_player
-    end
-
+    @kills << Kill.new(@players[killer], @players[killed], kill_reason)
+    @total_kills += 1
+    @players[killer].kill(@players[killed])
   end
 
   def player_names
-    @players.keys
+    @players.keys - ["<world>"]
   end
 
   def output_game_hash
     kills_info = {}
     score_info = {}
     @players.each do |name, player|
+      next if name == "<world>"
       kills_info[name] = player.kill_times
       score_info[name] = player.get_score
     end
 
-    @players.each { |name, player| kills_info[name] = player.kill_times }
     { @game_name => { total_kills: @total_kills,
                       players: player_names,
                       kills: kills_info,

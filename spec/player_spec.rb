@@ -1,29 +1,36 @@
 require 'player'
 
 describe Player do
-  let(:player) { Player.new("Example player") }
+  let(:player1) { Player.new("Example player1") }
+  let(:player2) { Player.new("Example player2") }
+  let(:player3) { Player.new("<world>") }
+  let(:player4) { Player.new("Example player3", 5, 2, 1) }
 
-  describe "#kill_other_player" do
+  describe "#kill" do
     it "should increase kill times when player kills another player" do
-      player.kill_other_player
-      expect(player.kill_times).to eq(1)
-      expect(player.get_score).to eq(1)
+      player1.kill(player2)
+      expect(player1.kill_times).to eq(1)
+      expect(player2.no_suicide_death_times).to eq(1)
+    end
+
+    it "should increase suicide times when player kills himself" do
+      player1.kill(player1)
+      expect(player1.suicide_times).to eq(1)
+    end
+
+    it "should increase suicide times when player is killed by <world>" do
+      player3.kill(player1)
+      expect(player1.suicide_times).to eq(1)
     end
   end
 
-  describe "#killed_by_other_player" do
-    it "should increase no suicide death times when player is killed by another player" do
-      player.killed_by_other_player
-      expect(player.no_suicide_death_times).to eq(1)
-      expect(player.get_score).to eq(-1)
+  describe "#get_score" do
+    it "should get score 0 when player has no kill events" do
+      expect(player1.get_score).to eq(0)
     end
-  end
 
-  describe "#commit_a_suicide" do
-    it "should increase suicide times when player commits a suicide" do
-      player.commit_a_suicide
-      expect(player.suicide_times).to eq(1)
-      expect(player.get_score).to eq(-1)
+    it "should get correct score when player has kill events" do
+      expect(player4.get_score).to eq(2)
     end
   end
 end

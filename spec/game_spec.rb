@@ -33,7 +33,7 @@ describe Game do
     end
   end
 
-  describe "#output_game_hasht" do
+  describe "#output_game_hash" do
     it "output the game information successfully" do
       expect_output_info = {"game_1"=>{:total_kills=>0, :players=>[], :kills=>{}, :scores=>{}}}
       expect(game.output_game_hash).to eq(expect_output_info)
