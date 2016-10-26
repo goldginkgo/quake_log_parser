@@ -1,7 +1,7 @@
 require 'json'
 
-require 'kill'
-require 'player'
+require_relative 'kill'
+require_relative 'player'
 
 class Game
   attr_reader :game_name, :players, :total_kills

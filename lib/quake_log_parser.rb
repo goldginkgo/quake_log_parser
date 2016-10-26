@@ -1,5 +1,5 @@
-require 'log_utils'
-require 'game'
+require_relative 'log_utils'
+require_relative 'game'
 
 class QuakeLogParser
   include LogUtils
@@ -28,5 +28,9 @@ class QuakeLogParser
         end
       end
     end
+  end
+
+  def display_game_information
+    @games.each {|game| puts game}
   end
 end
