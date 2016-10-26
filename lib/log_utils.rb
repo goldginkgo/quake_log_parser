@@ -2,6 +2,7 @@ module LogUtils
   LOG_FILE_NAME = "games.log"
   INIT_GAME_REGREX = /InitGame/
   END_GAME_REGREX = /-----/
+  PLAYER_REGREX = /ClientUserinfoChanged: \d n\\(.*?)\\/
   KILL_REGREX = /Kill:.*:\s(.*)\skilled\s(.*)\sby\s(.*)/
 
   def get_log_file_path
@@ -25,18 +26,24 @@ module LogUtils
   end
 
   def game_start?(line)
-    return true if line =~ INIT_GAME_REGREX
-    return false
+    line =~ INIT_GAME_REGREX ? true : false
   end
 
   def game_over?(line)
-    return true if line =~ END_GAME_REGREX
-    return false
+    line =~ END_GAME_REGREX ? true : false
+  end
+
+  def player_line?(line)
+    line =~ PLAYER_REGREX ? true : false
+  end
+
+  def get_player_name(line)
+    line =~ PLAYER_REGREX
+    $1
   end
 
   def kill_event?(line)
-    return true if line =~ KILL_REGREX
-    return false
+    line =~ KILL_REGREX ? true : false
   end
 
   def get_kill_info_from_kill_event(line)

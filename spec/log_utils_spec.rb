@@ -38,6 +38,26 @@ describe LogUtils do
     end
   end
 
+  describe "#player_line?" do
+    it "should be true if the line contains player information" do
+      line = '21:51 ClientUserinfoChanged: 3 n\Dono da Bola\t\0\model\sarge/krusade\hmodel\sarge/krusade\g_redteam\\g_blueteam\\c1\5\c2\5\hc\95\w\0\l\0\tt\0\tl\0'
+      expect(extended_class.player_line?(line)).to be true
+    end
+
+    it "should be false if the line doesn't conatain player information" do
+      line = "15:00 Exit: Timelimit hit."
+      expect(extended_class.player_line?(line)).to be false
+    end
+  end
+
+  describe "#get_player_name" do
+    it "should parse the kill event successfully" do
+      line = '21:51 ClientUserinfoChanged: 3 n\Dono da Bola\t\0\model\sarge/krusade\hmodel\sarge/krusade\g_redteam\\g_blueteam\\c1\5\c2\5\hc\95\w\0\l\0\tt\0\tl\0'
+      player_name = extended_class.get_player_name(line)
+      expect(player_name).to eq("Dono da Bola")
+    end
+  end
+
   describe "#kill_event?" do
     it "should be true if the line is an killing event" do
       line = "21:42 Kill: 1022 2 22: <world> killed Isgalamido by MOD_TRIGGER_HURT"

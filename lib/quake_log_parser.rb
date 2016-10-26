@@ -18,6 +18,9 @@ class QuakeLogParser
         if game_start?(line)
           game_name = "game_#{@games.length + 1}"
           @current_game = Game.new(game_name)
+        elsif player_line?(line)
+          player_name = get_player_name(line)
+          @current_game.add_player(player_name)
         elsif kill_event?(line)
           killer, killed, kill_reason = get_kill_info_from_kill_event(line)
           @current_game.deal_with_kill_event(killer, killed, kill_reason)
