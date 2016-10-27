@@ -25,26 +25,8 @@ class Game
     @kills << Kill.new(killer_player, killed_player, kill_reason)
   end
 
-  def player_names
-    real_players.map(&:name)
-  end
-
-  def total_kills
-    @kills.length
-  end
-
-  def real_players
-    @players.select {|player| player.name != '<world>'}
-  end
-
   def get_player_by_name(name)
     @players.detect { |player| player.name == name }
-  end
-
-  def create_new_player(name)
-    player = Player.new(name)
-    @players << player
-    player
   end
 
   def output_game_hash
@@ -74,5 +56,25 @@ class Game
       kill_reasons[kill.kill_reason] += 1
     end
     { @game_name => { kills_by_means: kill_reasons}}
+  end
+
+  private
+
+  def player_names
+    real_players.map(&:name)
+  end
+
+  def total_kills
+    @kills.length
+  end
+
+  def real_players
+    @players.select {|player| player.name != '<world>'}
+  end
+
+  def create_new_player(name)
+    player = Player.new(name)
+    @players << player
+    player
   end
 end
