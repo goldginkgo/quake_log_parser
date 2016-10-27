@@ -9,6 +9,10 @@ describe Game do
       expect(game.get_player_by_name('test1')).to be_truthy
       expect(game.get_player_by_name('test2')).to be_truthy
     end
+
+    it "should get nil when retrieving player by incorrect name" do
+      expect(game.get_player_by_name('test3')).to be_nil
+    end
   end
 
   describe "#deal_with_kill_event" do
@@ -77,6 +81,11 @@ describe Game do
       expect_info = {"game_1" => {:kills_by_means => { "MOD_RAILGUN" => 1,
                                                        "MOD_TRIGGER_HURT" => 1,
                                                        "MOD_ROCKET_SPLASH" => 2}}}
+      expect(game.generate_aggregation_kill_reasons_hash).to eq(expect_info)
+    end
+
+    it "generate aggregation kill reasons with no kill events" do
+      expect_info = {"game_1" => {:kills_by_means => {}}}
       expect(game.generate_aggregation_kill_reasons_hash).to eq(expect_info)
     end
   end

@@ -5,6 +5,7 @@ describe Player do
   let(:player2) { Player.new("Example player2") }
   let(:player3) { Player.new("<world>") }
   let(:player4) { Player.new("Example player3", 5, 2, 1) }
+  let(:player5) { Player.new("Example player1") }
 
   describe "#kill" do
     it "should increase kill times when player kills another player" do
@@ -31,6 +32,16 @@ describe Player do
 
     it "should get correct score when player has kill events" do
       expect(player4.get_score).to eq(4)
+    end
+  end
+
+  describe "#==" do
+    it "should be true when comparing same player" do
+      expect(player1).to be == player5
+    end
+
+    it "should be false when comparing two players" do
+      expect(player1).not_to be == player2
     end
   end
 end
