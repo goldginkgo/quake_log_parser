@@ -23,6 +23,8 @@ class QuakeLogParser
           @current_game.add_player(player_name)
         elsif kill_event?(line)
           killer, killed, kill_reason = get_kill_info_from_kill_event(line)
+          kill_reason = kill_reason.to_sym
+          kill_reason = :MOD_UNKNOWN unless MEANS_OF_DEATH.include?(kill_reason)
           @current_game.deal_with_kill_event(killer, killed, kill_reason)
         elsif game_over?(line)
           @games << @current_game if @current_game && !@games.include?(@current_game)
