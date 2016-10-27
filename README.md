@@ -15,13 +15,35 @@ rspec --format doc
 ```
 
 ## Run the parser
-This parses the default log file in quake_logs folder.
+Execute the following command line to run the parser.
 ```
-cd quake_log_parser
+Usage: ruby main.rb [options]
+
+Specific options:
+    -f, --file Name                  Specify the log file path.
+    -k, --kill-reason                Display aggregation of kill reasons.
+    -g, --game-name Name             Display information for a single game.
+
+Common options:
+    -h, --help                       Show this message.
+```
+For example, run the following command to show the scores for all games.
+```
+ruby main.rb -f <LOG_FILE_PATH>
+```
+Your can also omit the -f option to parse the default log file in quake_logs folder.
+```
 ruby main.rb
 ```
-If you want to parser another Quake log file, please use the following commands:
+If you want to show scores for a specific game,
 ```
-cd quake_log_parser
-ruby main.rb <LOG_FILE_PATH>
+ruby main.rb -g game_1
+```
+If you want to show aggregation of kill reason for all games,
+```
+ruby main.rb -k
+```
+If you want to show aggregation of kill reason for a specific game,
+```
+ruby main.rb -k -g game_1
 ```
